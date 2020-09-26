@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "74175650407",
+    "firebase_url": "https://go-vantravel.firebaseio.com",
+    "project_id": "go-vantravel",
+    "storage_bucket": "go-vantravel.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74175650407:android:448b61e4ae4405ed22d2c2",
+        "android_client_info": {
+          "package_name": "com.adbelikov.go"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74175650407-9ahsl7nao4fbp7lb83thksp6q0h2l5g3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMZFjSOSmQVsoHsuhGG8DZiLJU1fHeNYQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74175650407-9ahsl7nao4fbp7lb83thksp6q0h2l5g3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
