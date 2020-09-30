@@ -1,4 +1,12 @@
+// Copyright 2020 Andrey Belikov. All rights reserved.
+// Use of this source code is governed by a BSD-style license that
+// can be found in the LICENSE file.
+
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:go_travel/view/map_mapbox_view.dart';
+// import 'package:sliding_sheet/sliding_sheet.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,39 +17,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'GO Travel',
+      // ThemeData.light(),
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
+        brightness: Brightness.dark,
+        accentColor: Colors.amber,
+        primaryColor: Colors.lightBlue[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'GO Travel'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -50,68 +40,170 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _selectedIndex = 0;
+  PanelController _pc = new PanelController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  // final List<Widget> _widgetOptions = <Widget>[];
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+      body: SlidingUpPanel(
+        controller: _pc,
+        parallaxEnabled: true,
+        parallaxOffset: 0.6,
+        panelSnapping: true,
+        color: Theme.of(context).primaryColor,
+        slideDirection: SlideDirection.DOWN,
+        minHeight: 20,
+        maxHeight: MediaQuery.of(context).size.height * 0.6, //- 140, //600,
+        backdropEnabled: true,
+        collapsed: Center(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: Container(
+              color: Theme.of(context).accentColor,
+              width: 100,
+              height: 6,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
+        ),
+        panel: Center(
+          child: Text("This is the sliding Widget"),
+        ),
+        body: Center(
+          child: MapBoxView(),
+          //child: Text("This is the Widget behind the sliding panel", style: TextStyle(color: Theme.of(context).primaryColor)),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map, size: 28),
+            title: Text('Map', style: optionStyle),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.reorder, size: 28),
+            title: Text('List', style: optionStyle),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, size: 28),
+            title: Text('Tools', style: optionStyle),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        //fixedColor: Colors.red,
+        selectedItemColor: Theme.of(context).accentColor, //Colors.amber[800],
+        onTap: null,
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor, //.white,
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () {
+          _pc.isPanelShown ? _pc.hide() : _pc.show();
+        },
+      ),
     );
   }
 }
+
+/*
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: SlidingSheet(
+        elevation: 4,
+        cornerRadius: 0,
+        snapSpec: const SnapSpec(
+          // Enable snapping. This is true by default.
+          snap: true,
+          // Set custom snapping points.
+          snappings: [0.03, 0.6, 1.0],
+          // Define to what the snappings relate to. In this case,
+          // the total available space that the sheet can expand to.
+          positioning: SnapPositioning.relativeToAvailableSpace,
+        ),
+        // The body widget will be displayed under the SlidingSheet
+        // and a parallax effect can be applied to it.
+        body: Center(
+          child: Text('This widget is below the SlidingSheet'),
+        ),
+        builder: (context, state) {
+          // This is the content of the sheet that will get
+          // scrolled, if the content is bigger than the available
+          // height of the sheet.
+          return Container(
+            height: 1500,
+            child: Center(
+              child: Text('This is the content of the sheet'),
+            ),
+          );
+        },
+        headerBuilder: (context, state) {
+          return Container(
+            height: 56,
+            width: double.infinity,
+            color: Colors.white60,
+            alignment: Alignment.center,
+            child: Text(
+              'This is the header',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.black),
+            ),
+          );
+        },
+        footerBuilder: (context, state) {
+          return Container(
+            height: 56,
+            width: double.infinity,
+            color: Colors.yellow,
+            alignment: Alignment.center,
+            child: Text(
+              'This is the footer',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.black),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            title: Text('Home'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business),
+            title: Text('Business'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('School'),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: null,
+        elevation: 12,
+      ),
+    );
+  }
+}
+*/
