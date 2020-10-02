@@ -3,7 +3,7 @@
 // can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+//import 'package:flutter/rendering.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:go_travel/view/map_mapbox_view.dart';
 // import 'package:sliding_sheet/sliding_sheet.dart';
@@ -20,9 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'GO Travel',
       // ThemeData.light(),
       theme: ThemeData(
-        brightness: Brightness.dark,
-        accentColor: Colors.amber,
-        primaryColor: Colors.lightBlue[800],
+        brightness: Brightness.light,// .dark,
+        //accentColor: Colors.amber,
+        //primaryColor: Colors.lightBlue[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: MyHomePage(title: 'GO Travel'),
@@ -44,8 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   PanelController _pc = new PanelController();
 
   // final List<Widget> _widgetOptions = <Widget>[];
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
+  //static const TextStyle optionStyle =
+  //    TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,40 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SlidingUpPanel(
+      body: MapBoxView(), 
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map, size: 28),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.reorder, size: 28),
+            label: 'List',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings, size: 28),
+            label: 'Tools',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        //fixedColor: Colors.red,
+        selectedItemColor: Theme.of(context).accentColor, //Colors.amber[800],
+        onTap: null,
+        elevation: 0,
+        backgroundColor: Theme.of(context).primaryColor, //.white,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _pc.isPanelShown ? _pc.hide() : _pc.show();
+        },
+      ),
+    );
+  }
+}
+
+/*
+SlidingUpPanel(
         controller: _pc,
         parallaxEnabled: true,
         parallaxOffset: 0.6,
@@ -82,38 +115,9 @@ class _MyHomePageState extends State<MyHomePage> {
           //child: Text("This is the Widget behind the sliding panel", style: TextStyle(color: Theme.of(context).primaryColor)),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map, size: 28),
-            title: Text('Map', style: optionStyle),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.reorder, size: 28),
-            title: Text('List', style: optionStyle),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings, size: 28),
-            title: Text('Tools', style: optionStyle),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        //fixedColor: Colors.red,
-        selectedItemColor: Theme.of(context).accentColor, //Colors.amber[800],
-        onTap: null,
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColor, //.white,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _pc.isPanelShown ? _pc.hide() : _pc.show();
-        },
-      ),
-    );
-  }
-}
 
-/*
+
+
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
