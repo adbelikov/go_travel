@@ -2,12 +2,19 @@
 // Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
+//import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:go_travel/tab_bar/tab_bar_view.dart';
-//import 'package:flutter/rendering.dart';
-//import 'package:sliding_up_panel/sliding_up_panel.dart';
-//import 'package:go_travel/view/map_mapbox_view.dart';
-// import 'package:sliding_sheet/sliding_sheet.dart';
+import 'package:provider/provider.dart';
+// controller
+import 'package:go_travel/tab_bar/tab_bar_controller.dart';
+// views
+import 'package:go_travel/tab_bar/tab_bar_view.dart' as tabs;
+import 'package:go_travel/view/map_mapbox_view.dart';
+import 'package:go_travel/view/poi_list_view.dart';
+import 'package:go_travel/view/tools_list_view.dart';
+
+//enum ThemeName { Internrt, NoInternrt, Unknown }
 
 void main() {
   runApp(MyApp());
@@ -18,54 +25,108 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'GO Travel',
       // ThemeData.light(),
       theme: ThemeData(
         brightness: Brightness.light, //.dark, //.light,//
         //accentColor: Colors.amber,
         //primaryColor: Colors.lightBlue[800],
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        visualDensity: VisualDensity.adaptivePlatformDensity,  
       ),
-      home: MyHomePage(title: 'GO Travel'),
+      home: HomePage(title: 'GO Travel'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
 
   final String title;
-
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  //int _selectedIndex = 0;
-  //PanelController _pc = new PanelController();
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin {
+  final List<Widget> pages = [MapBoxView(), PoiListView(), ToolsListView()];
 
-  // final List<Widget> _widgetOptions = <Widget>[];
-  //static const TextStyle optionStyle =
-  //    TextStyle(fontSize: 14, fontWeight: FontWeight.bold);
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        title: Text(widget.title),
-        bottom: PreferredSize(
-          child: TabsBarView(),
-          preferredSize: Size(50, 50),
+    return MultiProvider(
+      providers: [
+        Provider(
+          create: (context) => TabBarController(),
+          dispose: (context, TabBarController t) => t.dispose(),
         ),
-      ),
-      body: Center(child: TabsBarView()), //MapBoxView(),
-      bottomNavigationBar: TabsBarView(),
-    );
+      ],
+      child: Consumer<TabBarController>(builder: (context, tab, child) {
+        return StreamBuilder<int>(
+          stream: tab.tabControl,
+          initialData: null,
+          builder: (context, tab) {
+            if (tab.hasData && tab.data != null) {
+              return Scaffold(
+                //backgroundColor: Colors.grey.shade200,
+                appBar: AppBar(
+                  title: Text(widget.title),
+                ),
+                body: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: pages[tab.data],
+                ),
+                bottomNavigationBar: tabs.TabBarView(),
+              );
+            } else {
+              return Scaffold(
+                  body: Center(child: Text('Loading App...'))
+              );
+            }
+        });
+      }));
   }
+
+
 }
 
 /*
+                //bottom: PreferredSize(
+                //  child: TabsBarView(),
+                //  preferredSize: Size.fromHeight(56),
+                //),
+
+FadeTransition(
+                opacity: _animation,
+                child: pages[tab.data],
+              ),
+
+Scaffold(
+      //backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+        title: Text(widget.title),
+        //bottom: PreferredSize(
+        //  child: TabsBarView(),
+        //  preferredSize: Size.fromHeight(56),
+        //),
+      ),
+      body: MapBoxView(),
+      bottomNavigationBar: TabsBarView(),
+    );
+
+
+
+
+
 SlidingUpPanel(
         controller: _pc,
         parallaxEnabled: true,
