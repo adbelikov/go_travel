@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // controller
-import 'package:go_travel/tab_bar/tab_bar_controller.dart';
+import 'package:go_travel/home/tab_bar/tab_bar_controller.dart';
 
 class TabBarView extends StatefulWidget {
 

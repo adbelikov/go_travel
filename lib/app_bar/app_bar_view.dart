@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_travel/tab_bar/tab_bar_view.dart' as tabs;
+import 'package:go_travel/home/tab_bar/tab_bar_view.dart' as tabs;
 
 class AppBarView extends StatefulWidget {
   AppBarView({Key key, this.title}) : super(key: key);

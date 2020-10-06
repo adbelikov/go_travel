@@ -121,13 +121,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  fluttertoast:
-    dependency: "direct main"
-    description:
-      name: fluttertoast
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "7.1.1"
   geohash:
     dependency: "direct main"
     description:
@@ -350,13 +343,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliding_sheet:
-    dependency: "direct main"
-    description:
-      name: sliding_sheet
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   sliding_up_panel:
     dependency: "direct main"
     description:

@@ -40,9 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <meta-data 
+        <!-- meta-data 
               android:name="com.google.android.geo.API_KEY"
-              android:value="AIzaSyCHJFWQYN9xCN2Xfrp0g57jFFGGLiR9gm0" />
+              android:value="AIzaSyCHJFWQYN9xCN2Xfrp0g57jFFGGLiR9gm0" /-->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
