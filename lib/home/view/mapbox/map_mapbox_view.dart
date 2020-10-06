@@ -3,8 +3,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
+import 'package:sliding_sheet/sliding_sheet.dart';
+//import 'package:sliding_up_panel/sliding_up_panel.dart';
 //import 'package:provider/provider.dart';
 
 // Add your Mapbox access token here
@@ -19,15 +20,18 @@ class MapBoxView extends StatefulWidget {
 }
 
 class _MapBoxViewState extends State<MapBoxView> {
-  //with SingleTickerProviderStateMixin {
-  //int _symbolCount = 0;
   Symbol _selectedSymbol;
   MapboxMapController mapController;
+
+  //BuildContext _sheetContext;
+  SheetController sheetController;
 
   @override
   void initState() {
     super.initState();
     internetAccess();
+    sheetController = SheetController();
+    sheetController.hide();
   }
 
   void _onMapCreated(MapboxMapController controller) {
@@ -40,7 +44,7 @@ class _MapBoxViewState extends State<MapBoxView> {
       mapController.addSymbol(
         SymbolOptions(
           geometry: LatLng(59.9590, 30.3618),
-          iconImage: "assets/images/map_marker_red.png",
+          iconImage: "assets/image/map_marker_red.png",
           iconSize: 1.0,
           //iconColor: '#3bb2d0',
         ),
@@ -57,10 +61,65 @@ class _MapBoxViewState extends State<MapBoxView> {
 
   @override
   Widget build(BuildContext context) {
-    return viewMap();
+    //return viewMap();
+    return SlidingSheet(
+      //duration: const Duration(milliseconds: 900),
+      controller: sheetController,
+      shadowColor: Colors.black26,
+      elevation: 8,
+      //cornerRadius: 16,
+      //cornerRadiusOnFullscreen: 0.0,
+      //closeOnBackButtonPressed: true,
+      //addTopViewPaddingOnFullscreen: true,
+      //isBackdropInteractable: true,
+      //liftOnScrollFooterElevation: 4.0,
+      snapSpec: const SnapSpec(
+        snap: true,
+        snappings: [0.0, SnapSpec.headerSnap, 0.75, 1.0], // double.infinity
+        positioning: SnapPositioning.relativeToAvailableSpace, //.pixelOffset,
+      ),
+      body: viewMap(),
+      builder: (context, state) {
+        return Container(
+          height: 2500,
+          child: Center(
+            child: Text('This is the content of the sheet'),
+          ),
+        );
+      },
+      headerBuilder: (context, state) {
+        return Container(
+            height: 112,
+            color: Colors.green,
+            child: InkWell(
+                onTap: () {
+                  sheetController?.hide();
+                },
+                child: Center(
+                  child: Text('Header'),
+                )));
+      },
+      footerBuilder: (context, state) {
+        return Container(
+          height: 56,
+          width: double.infinity,
+          color: Colors.yellow,
+          alignment: Alignment.center,
+          child: Text(
+            'This is the footer',
+            style: Theme.of(context)
+                .textTheme
+                .bodyText2
+                .copyWith(color: Colors.black),
+          ),
+        );
+      },
+    );
   }
 
   Widget viewMap() {
+    print('--> Height = ${MediaQuery.of(context).size.height}');
+    print('--> Width  = ${MediaQuery.of(context).size.width}');
     return MapboxMap(
       myLocationEnabled: true,
       myLocationRenderMode: MyLocationRenderMode.GPS,
@@ -100,10 +159,13 @@ class _MapBoxViewState extends State<MapBoxView> {
         const SymbolOptions(iconSize: 1.0),
       );
     }
+    sheetController?.snapToExtent(SnapSpec.headerSnap, duration: Duration(milliseconds: 500)); //.expand();
     setState(() {
       _selectedSymbol = argument;
     });
     // добавить появление информации по точке !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //_sheetController.show();
+
     // координаты маркера
     // print('marker press --> ${argument.options.geometry}');
     // выделяем новый маркер
@@ -156,6 +218,43 @@ class _MapBoxViewState extends State<MapBoxView> {
 }
 
 /*
+
+
+view
+
+Widget viewMap() {
+    return MapboxMap(
+      myLocationEnabled: true,
+      myLocationRenderMode: MyLocationRenderMode.GPS,
+      //compassEnabled: true,
+      zoomGesturesEnabled: true,
+      rotateGesturesEnabled: false,
+      minMaxZoomPreference: MinMaxZoomPreference(3, 18),
+      accessToken: ACCESS_TOKEN,
+      trackCameraPosition: true,
+      onMapCreated: _onMapCreated,
+      onMapClick: (point, latLng) async {
+        print(
+            '--> Map press: ${point.x},${point.y}   ${latLng.latitude}/${latLng.longitude}');
+      },
+      onMapLongClick: (point, latLng) async {
+        print(
+            "--> Map long press: ${point.x},${point.y}   ${latLng.latitude}/${latLng.longitude}");
+        //Point convertedPoint = await mapController.toScreenLocation(latLng);
+        //LatLng convertedLatLng = await mapController.toLatLng(point);
+        //print("Map long press converted: ${convertedPoint.x},${convertedPoint.y}   ${convertedLatLng.latitude}/${convertedLatLng.longitude}");
+
+        List features =
+            await mapController.queryRenderedFeatures(point, [], null);
+        if (features.length > 0) {
+          print(features[0]);
+        }
+      },
+      initialCameraPosition:
+          const CameraPosition(target: LatLng(59.9590, 30.3618), zoom: 15),
+    );
+  }
+  
 
     mapController.addSymbol(
       SymbolOptions(

@@ -1,5 +1,5 @@
 name: go_travel
-description: A new Flutter project.
+description: Traveler program. Notebook of notes about waypoints, points of interest and parking.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -35,8 +35,8 @@ dependencies:
   location: ^3.0.2
   geohash: ^0.2.1
   badges: ^1.1.1
-  # sliding_sheet: ^0.4.0
-  sliding_up_panel: ^1.0.2
+  sliding_sheet: ^0.4.0
+  # sliding_up_panel: ^1.0.2
   mapbox_gl: ^0.8.0
   # fluttertoast: ^7.1.1
 
@@ -61,7 +61,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/maps/
-    - assets/images/
+    - assets/image/
     - assets/icons/
     - assets/fonts/
     - assets/langs/

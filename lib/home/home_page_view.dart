@@ -67,33 +67,6 @@ class _HomePageState extends State<HomePage> {
 }
 
 /*
-                //bottom: PreferredSize(
-                //  child: TabsBarView(),
-                //  preferredSize: Size.fromHeight(56),
-                //),
-
-FadeTransition(
-                opacity: _animation,
-                child: pages[tab.data],
-              ),
-
-Scaffold(
-      //backgroundColor: Colors.grey.shade200,
-      appBar: AppBar(
-        title: Text(widget.title),
-        //bottom: PreferredSize(
-        //  child: TabsBarView(),
-        //  preferredSize: Size.fromHeight(56),
-        //),
-      ),
-      body: MapBoxView(),
-      bottomNavigationBar: TabsBarView(),
-    );
-
-
-
-
-
 SlidingUpPanel(
         controller: _pc,
         parallaxEnabled: true,
@@ -122,8 +95,6 @@ SlidingUpPanel(
           //child: Text("This is the Widget behind the sliding panel", style: TextStyle(color: Theme.of(context).primaryColor)),
         ),
       ),
-
-
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
@@ -217,4 +188,32 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+                //bottom: PreferredSize(
+                //  child: TabsBarView(),
+                //  preferredSize: Size.fromHeight(56),
+                //),
+
+FadeTransition(
+                opacity: _animation,
+                child: pages[tab.data],
+              ),
+
+Scaffold(
+      //backgroundColor: Colors.grey.shade200,
+      appBar: AppBar(
+        title: Text(widget.title),
+        //bottom: PreferredSize(
+        //  child: TabsBarView(),
+        //  preferredSize: Size.fromHeight(56),
+        //),
+      ),
+      body: MapBoxView(),
+      bottomNavigationBar: TabsBarView(),
+    );
+
+
+
+
+
 */

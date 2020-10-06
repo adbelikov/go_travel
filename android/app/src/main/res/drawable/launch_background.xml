@@ -7,7 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@mipmap/circle_logo"
-            android:tileMode="disable" />
+            android:src="@mipmap/circle_logo" />
     </item>
 </layer-list>
