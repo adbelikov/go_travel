@@ -1,6 +1,6 @@
 # go_travel
 
-A new Flutter project.
+Traveler program. Notebook of notes about waypoints, points of interest and parking.
 
 ## Getting Started
 
