@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
       title: 'GO Travel',
       // ThemeData.light(),
       theme: ThemeData(
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         //primaryColor: Colors.lightBlue[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,  
       ),
-      home: HomePage(title: 'GO Travel'),
+      home: HomePage(title: 'Go Travel'),
     );
   }
 }

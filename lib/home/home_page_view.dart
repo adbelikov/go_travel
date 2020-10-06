@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    // with TickerProviderStateMixin {
+  // with TickerProviderStateMixin {
   final List<Widget> pages = [MapBoxView(), PoiListView(), ToolsListView()];
 
   //@override
@@ -33,36 +33,34 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        Provider(
-          create: (context) => TabBarController(),
-          dispose: (context, TabBarController t) => t.dispose(),
-        ),
-      ],
-      child: Consumer<TabBarController>(builder: (context, tab, child) {
-        return StreamBuilder<int>(
-          stream: tab.tabControl,
-          initialData: null,
-          builder: (context, tab) {
-            if (tab.hasData && tab.data != null) {
-              return Scaffold(
-                //backgroundColor: Colors.grey.shade200,
-                appBar: AppBar(
-                  title: Text(widget.title),
-                ),
-                body: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: pages[tab.data],
-                ),
-                bottomNavigationBar: tabs.TabBarView(),
-              );
-            } else {
-              return Scaffold(
-                  body: Center(child: Text('Loading App...'))
-              );
-            }
-        });
-      }));
+        providers: [
+          Provider(
+            create: (context) => TabBarController(),
+            dispose: (context, TabBarController t) => t.dispose(),
+          ),
+        ],
+        child: Consumer<TabBarController>(builder: (context, tab, child) {
+          return StreamBuilder<int>(
+              stream: tab.tabControl,
+              initialData: null,
+              builder: (context, tab) {
+                if (tab.hasData && tab.data != null) {
+                  return Scaffold(
+                    //backgroundColor: Colors.grey.shade200,
+                    appBar: AppBar(
+                      title: Text(widget.title),
+                    ),
+                    body: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      child: pages[tab.data],
+                    ),
+                    bottomNavigationBar: tabs.TabBarView(),
+                  );
+                } else {
+                  return Scaffold(body: Center(child: Text('Loading App...')));
+                }
+              });
+        }));
   }
 }
 
