@@ -2,15 +2,10 @@
 // Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 // controller
 // views
 import 'package:go_travel/home/home_page_view.dart';
-
-
-//enum ThemeName { Internrt, NoInternrt, Unknown }
 
 void main() {
   runApp(MyApp());

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // controller
 import 'package:go_travel/home/tab_bar/tab_bar_controller.dart';
+import 'package:go_travel/home/view/mapbox/location_services.dart';
 // views
 import 'package:go_travel/home/tab_bar/tab_bar_view.dart' as tabs;
-import 'package:go_travel/home/view/mapbox/map_mapbox_view.dart';
+import 'package:go_travel/home/view/mapbox/mapbox_view.dart';
 import 'package:go_travel/home/view/poi_list_view.dart';
 import 'package:go_travel/home/view/tools_list_view.dart';
 
@@ -49,6 +50,19 @@ class _HomePageState extends State<HomePage> {
                     //backgroundColor: Colors.grey.shade200,
                     appBar: AppBar(
                       title: Text(widget.title),
+                      actions: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                LocationServices().getLocationPosition();
+                              },
+                              child: Icon(
+                                Icons.gps_fixed,
+                                size: 26.0,
+                              ),
+                            )),
+                      ],
                     ),
                     body: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 500),

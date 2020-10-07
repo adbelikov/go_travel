@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:go_travel/home/view/sheet/sheet_view.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 //import 'package:provider/provider.dart';
+// view
+import 'package:go_travel/home/view/sheet/sheet_view.dart';
 
 // Add your Mapbox access token here
 const String ACCESS_TOKEN =
@@ -17,7 +18,7 @@ class MapBoxView extends StatefulWidget {
 }
 
 class _MapBoxViewState extends State<MapBoxView> {
-  Symbol _selectedSymbol;
+  Symbol _selectedMarker;
   MapboxMapController mapController;
 
   @override
@@ -47,7 +48,6 @@ class _MapBoxViewState extends State<MapBoxView> {
   @override
   void dispose() {
     mapController?.onSymbolTapped?.remove(_markerTaped);
-    //mapController?.dispose();
     super.dispose();
   }
 
@@ -57,8 +57,6 @@ class _MapBoxViewState extends State<MapBoxView> {
   }
 
   Widget viewMap() {
-    print('--> Height = ${MediaQuery.of(context).size.height}');
-    print('--> Width  = ${MediaQuery.of(context).size.width}');
     return MapboxMap(
       myLocationEnabled: true,
       myLocationRenderMode: MyLocationRenderMode.GPS,
@@ -93,7 +91,7 @@ class _MapBoxViewState extends State<MapBoxView> {
 
   void _markerTaped(Symbol argument) {
     // снимаем выделение с текущего маркера
-    if (_selectedSymbol != null) {
+    if (_selectedMarker != null) {
       _updateSelectedSymbol(
         const SymbolOptions(iconSize: 1.0),
       );
@@ -101,7 +99,7 @@ class _MapBoxViewState extends State<MapBoxView> {
     sheetView(context);
     //sheetController?.snapToExtent(SnapSpec.headerSnap, duration: Duration(milliseconds: 500)); //.expand();
     setState(() {
-      _selectedSymbol = argument;
+      _selectedMarker = argument;
     });
     // добавить появление информации по точке !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //_sheetController.show();
@@ -117,7 +115,7 @@ class _MapBoxViewState extends State<MapBoxView> {
   }
 
   void _updateSelectedSymbol(SymbolOptions changes) {
-    mapController.updateSymbol(_selectedSymbol, changes);
+    mapController.updateSymbol(_selectedMarker, changes);
   }
 
   // проверка наличия интернета
@@ -141,7 +139,6 @@ class _MapBoxViewState extends State<MapBoxView> {
               Icons.wifi_off,
               size: 32,
             ),
-            //CircularProgressIndicator(),
             Container(
               width: 16,
               height: 0,
