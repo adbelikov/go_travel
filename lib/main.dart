@@ -2,15 +2,10 @@
 // Use of this source code is governed by a BSD-style license that
 // can be found in the LICENSE file.
 
-//import 'dart:io';
-
 import 'package:flutter/material.dart';
 // controller
 // views
 import 'package:go_travel/home/home_page_view.dart';
-
-
-//enum ThemeName { Internrt, NoInternrt, Unknown }
 
 void main() {
   runApp(MyApp());
@@ -21,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
       title: 'GO Travel',
       // ThemeData.light(),
       theme: ThemeData(
@@ -30,7 +25,7 @@ class MyApp extends StatelessWidget {
         //primaryColor: Colors.lightBlue[800],
         visualDensity: VisualDensity.adaptivePlatformDensity,  
       ),
-      home: HomePage(title: 'GO Travel'),
+      home: HomePage(title: 'Go Travel'),
     );
   }
 }

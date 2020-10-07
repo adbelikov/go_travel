@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // controller
 import 'package:go_travel/home/tab_bar/tab_bar_controller.dart';
+import 'package:go_travel/home/view/mapbox/location_services.dart';
 // views
 import 'package:go_travel/home/tab_bar/tab_bar_view.dart' as tabs;
-import 'package:go_travel/home/view/mapbox/map_mapbox_view.dart';
+import 'package:go_travel/home/view/mapbox/mapbox_view.dart';
 import 'package:go_travel/home/view/poi_list_view.dart';
 import 'package:go_travel/home/view/tools_list_view.dart';
 
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-    // with TickerProviderStateMixin {
+  // with TickerProviderStateMixin {
   final List<Widget> pages = [MapBoxView(), PoiListView(), ToolsListView()];
 
   //@override
@@ -33,36 +34,47 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        Provider(
-          create: (context) => TabBarController(),
-          dispose: (context, TabBarController t) => t.dispose(),
-        ),
-      ],
-      child: Consumer<TabBarController>(builder: (context, tab, child) {
-        return StreamBuilder<int>(
-          stream: tab.tabControl,
-          initialData: null,
-          builder: (context, tab) {
-            if (tab.hasData && tab.data != null) {
-              return Scaffold(
-                //backgroundColor: Colors.grey.shade200,
-                appBar: AppBar(
-                  title: Text(widget.title),
-                ),
-                body: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 500),
-                  child: pages[tab.data],
-                ),
-                bottomNavigationBar: tabs.TabBarView(),
-              );
-            } else {
-              return Scaffold(
-                  body: Center(child: Text('Loading App...'))
-              );
-            }
-        });
-      }));
+        providers: [
+          Provider(
+            create: (context) => TabBarController(),
+            dispose: (context, TabBarController t) => t.dispose(),
+          ),
+        ],
+        child: Consumer<TabBarController>(builder: (context, tab, child) {
+          return StreamBuilder<int>(
+              stream: tab.tabControl,
+              initialData: null,
+              builder: (context, tab) {
+                if (tab.hasData && tab.data != null) {
+                  return Scaffold(
+                    //backgroundColor: Colors.grey.shade200,
+                    appBar: AppBar(
+                      title: Text(widget.title),
+                      actions: [
+                        Padding(
+                            padding: EdgeInsets.only(right: 20.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                LocationServices().getLocationPosition();
+                              },
+                              child: Icon(
+                                Icons.gps_fixed,
+                                size: 26.0,
+                              ),
+                            )),
+                      ],
+                    ),
+                    body: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      child: pages[tab.data],
+                    ),
+                    bottomNavigationBar: tabs.TabBarView(),
+                  );
+                } else {
+                  return Scaffold(body: Center(child: Text('Loading App...')));
+                }
+              });
+        }));
   }
 }
 

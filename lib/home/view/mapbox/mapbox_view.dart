@@ -1,12 +1,10 @@
-//import 'dart:io';
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:sliding_sheet/sliding_sheet.dart';
-//import 'package:sliding_up_panel/sliding_up_panel.dart';
 //import 'package:provider/provider.dart';
+// view
+import 'package:go_travel/home/view/sheet/sheet_view.dart';
 
 // Add your Mapbox access token here
 const String ACCESS_TOKEN =
@@ -20,18 +18,13 @@ class MapBoxView extends StatefulWidget {
 }
 
 class _MapBoxViewState extends State<MapBoxView> {
-  Symbol _selectedSymbol;
+  Symbol _selectedMarker;
   MapboxMapController mapController;
-
-  //BuildContext _sheetContext;
-  SheetController sheetController;
 
   @override
   void initState() {
     super.initState();
     internetAccess();
-    sheetController = SheetController();
-    sheetController.hide();
   }
 
   void _onMapCreated(MapboxMapController controller) {
@@ -55,71 +48,15 @@ class _MapBoxViewState extends State<MapBoxView> {
   @override
   void dispose() {
     mapController?.onSymbolTapped?.remove(_markerTaped);
-    //mapController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //return viewMap();
-    return SlidingSheet(
-      //duration: const Duration(milliseconds: 900),
-      controller: sheetController,
-      shadowColor: Colors.black26,
-      elevation: 8,
-      //cornerRadius: 16,
-      //cornerRadiusOnFullscreen: 0.0,
-      //closeOnBackButtonPressed: true,
-      //addTopViewPaddingOnFullscreen: true,
-      //isBackdropInteractable: true,
-      //liftOnScrollFooterElevation: 4.0,
-      snapSpec: const SnapSpec(
-        snap: true,
-        snappings: [0.0, SnapSpec.headerSnap, 0.75, 1.0], // double.infinity
-        positioning: SnapPositioning.relativeToAvailableSpace, //.pixelOffset,
-      ),
-      body: viewMap(),
-      builder: (context, state) {
-        return Container(
-          height: 2500,
-          child: Center(
-            child: Text('This is the content of the sheet'),
-          ),
-        );
-      },
-      headerBuilder: (context, state) {
-        return Container(
-            height: 112,
-            color: Colors.green,
-            child: InkWell(
-                onTap: () {
-                  sheetController?.hide();
-                },
-                child: Center(
-                  child: Text('Header'),
-                )));
-      },
-      footerBuilder: (context, state) {
-        return Container(
-          height: 56,
-          width: double.infinity,
-          color: Colors.yellow,
-          alignment: Alignment.center,
-          child: Text(
-            'This is the footer',
-            style: Theme.of(context)
-                .textTheme
-                .bodyText2
-                .copyWith(color: Colors.black),
-          ),
-        );
-      },
-    );
+    return viewMap();
   }
 
   Widget viewMap() {
-    print('--> Height = ${MediaQuery.of(context).size.height}');
-    print('--> Width  = ${MediaQuery.of(context).size.width}');
     return MapboxMap(
       myLocationEnabled: true,
       myLocationRenderMode: MyLocationRenderMode.GPS,
@@ -154,14 +91,15 @@ class _MapBoxViewState extends State<MapBoxView> {
 
   void _markerTaped(Symbol argument) {
     // снимаем выделение с текущего маркера
-    if (_selectedSymbol != null) {
+    if (_selectedMarker != null) {
       _updateSelectedSymbol(
         const SymbolOptions(iconSize: 1.0),
       );
     }
-    sheetController?.snapToExtent(SnapSpec.headerSnap, duration: Duration(milliseconds: 500)); //.expand();
+    sheetView(context);
+    //sheetController?.snapToExtent(SnapSpec.headerSnap, duration: Duration(milliseconds: 500)); //.expand();
     setState(() {
-      _selectedSymbol = argument;
+      _selectedMarker = argument;
     });
     // добавить появление информации по точке !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     //_sheetController.show();
@@ -177,7 +115,7 @@ class _MapBoxViewState extends State<MapBoxView> {
   }
 
   void _updateSelectedSymbol(SymbolOptions changes) {
-    mapController.updateSymbol(_selectedSymbol, changes);
+    mapController.updateSymbol(_selectedMarker, changes);
   }
 
   // проверка наличия интернета
@@ -201,7 +139,6 @@ class _MapBoxViewState extends State<MapBoxView> {
               Icons.wifi_off,
               size: 32,
             ),
-            //CircularProgressIndicator(),
             Container(
               width: 16,
               height: 0,
